@@ -21,7 +21,7 @@ connectDB();
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: process.env.CLIENT_URL || "https://skillcraft-platform.onrender.com",
     credentials: true,
   }),
 );
