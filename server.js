@@ -21,7 +21,11 @@ connectDB();
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "https://skillcraft-platform.onrender.com",
+    origin: [
+      "https://skillcraft-platform.onrender.com",
+      "http://localhost:5173", // Add your local dev server
+      "http://localhost:3000", // Common alternative port
+    ],
     credentials: true,
   }),
 );
