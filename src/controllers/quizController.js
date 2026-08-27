@@ -3,14 +3,11 @@ import Lesson from "../models/Lesson.js";
 
 export const createQuiz = async (req, res) => {
   try {
-    const {
-      title,
-      questions,
-      passMark,
-    } = req.body;
+    const { title, questions, passMark } = req.body;
 
-    const lesson = await Lesson.findById(req.params.lessonId)
-      .populate("course");
+    const lesson = await Lesson.findById(req.params.lessonId).populate(
+      "course",
+    );
 
     if (!lesson) {
       return res.status(404).json({
@@ -19,10 +16,7 @@ export const createQuiz = async (req, res) => {
       });
     }
 
-    if (
-      lesson.course.tutor.toString() !==
-      req.user._id.toString()
-    ) {
+    if (lesson.course.instructor.toString() !== req.user._id.toString()) {
       return res.status(403).json({
         success: false,
         message: "You can only modify your own courses",
@@ -52,8 +46,7 @@ export const createQuiz = async (req, res) => {
 
 export const getQuiz = async (req, res) => {
   try {
-    const quiz = await Quiz.findById(req.params.id)
-      .select("-questions.answer");
+    const quiz = await Quiz.findById(req.params.id).select("-questions.answer");
 
     if (!quiz) {
       return res.status(404).json({
@@ -70,6 +63,25 @@ export const getQuiz = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to fetch quiz",
+    });
+  }
+};
+
+export const getQuizzes = async (req, res) => {
+  try {
+    const quizzes = await Quiz.find()
+      .populate("lesson", "title course")
+      .sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      quizzes,
+    });
+  } catch (error) {
+    console.error("Get quizzes error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch quizzes",
     });
   }
 };

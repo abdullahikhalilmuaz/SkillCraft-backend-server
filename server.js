@@ -12,6 +12,11 @@ import lessonRoutes from "./src/routes/lessonRoutes.js";
 import quizRoutes from "./src/routes/quizRoutes.js";
 import learningRoutes from "./src/routes/learningRoutes.js";
 import tutorRoutes from "./src/routes/tutorRoutes.js";
+import uploadRoutes from "./src/routes/uploadRoutes.js";
+import noteRoutes from "./src/routes/noteRoutes.js";
+import discussionRoutes from "./src/routes/discussionRoutes.js";
+import tutorAnalyticsRoutes from "./src/routes/tutorAnalyticsRoutes.js";
+
 
 dotenv.config();
 
@@ -45,8 +50,11 @@ app.use("/api/courses", courseRoutes);
 app.use("/api/lessons", lessonRoutes);
 app.use("/api/quizzes", quizRoutes);
 app.use("/api/learning", learningRoutes);
-
+app.use("/api/upload", uploadRoutes);
+app.use("/api/notes", noteRoutes);
+app.use("/api/discussions", discussionRoutes);
 app.use("/api/tutors", tutorRoutes);
+app.use("/api/tutor/analytics", tutorAnalyticsRoutes);
 
 app.use((req, res) => {
   res.status(404).json({
