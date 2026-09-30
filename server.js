@@ -16,7 +16,7 @@ import uploadRoutes from "./src/routes/uploadRoutes.js";
 import noteRoutes from "./src/routes/noteRoutes.js";
 import discussionRoutes from "./src/routes/discussionRoutes.js";
 import tutorAnalyticsRoutes from "./src/routes/tutorAnalyticsRoutes.js";
-
+import adminRoutes from "./src/routes/adminRoutes.js";
 
 dotenv.config();
 
@@ -55,6 +55,7 @@ app.use("/api/notes", noteRoutes);
 app.use("/api/discussions", discussionRoutes);
 app.use("/api/tutors", tutorRoutes);
 app.use("/api/tutor/analytics", tutorAnalyticsRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.use((req, res) => {
   res.status(404).json({

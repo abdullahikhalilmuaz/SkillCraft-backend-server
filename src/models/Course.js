@@ -11,13 +11,7 @@ const courseSchema = new mongoose.Schema(
     category: {
       type: String,
       required: true,
-      enum: [
-        "Cream Making",
-        "Soap Making",
-        "Perfume Making",
-        "Baking",
-        "Chemical Making",
-      ],
+      enum: ["Cream Making", "Soap Making", "Perfume Making"],
     },
 
     level: {

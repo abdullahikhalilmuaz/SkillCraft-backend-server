@@ -5,41 +5,39 @@ import {
   completeLesson,
   submitQuiz,
   getMyEnrollments,
+  getMyCertificates, // ← ADDED
+  getMyCertificateById, // ← ADDED
 } from "../controllers/learningController.js";
 
-import {
-  protect,
-  authorize,
-} from "../middlewares/authMiddleware.js";
+import { protect, authorize } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
+router.get("/my-courses", protect, authorize("student"), getMyEnrollments);
+
 router.get(
-  "/my-courses",
+  "/my-certificates",
   protect,
   authorize("student"),
-  getMyEnrollments
+  getMyCertificates,
 );
 
-router.post(
-  "/enroll/:courseId",
+router.get(
+  "/certificates/:id",
   protect,
   authorize("student"),
-  enrollInCourse
+  getMyCertificateById,
 );
+
+router.post("/enroll/:courseId", protect, authorize("student"), enrollInCourse);
 
 router.post(
   "/lesson/:lessonId/complete",
   protect,
   authorize("student"),
-  completeLesson
+  completeLesson,
 );
 
-router.post(
-  "/quiz/:quizId/submit",
-  protect,
-  authorize("student"),
-  submitQuiz
-);
+router.post("/quiz/:quizId/submit", protect, authorize("student"), submitQuiz);
 
 export default router;
