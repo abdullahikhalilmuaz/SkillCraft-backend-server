@@ -24,16 +24,35 @@ const app = express();
 
 connectDB();
 
+const allowedOrigins = [
+  "https://skillcraft-platform.onrender.com",
+  "http://localhost:5173",
+  "http://localhost:3000",
+];
+
 app.use(
   cors({
-    origin: [
-      "https://skillcraft-platform.onrender.com",
-      "http://localhost:5173", // Add your local dev server
-      "http://localhost:3000", // Common alternative port
-    ],
+    origin: (origin, callback) => {
+      // Allow requests with no origin (Postman, curl, server-to-server)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error(`CORS blocked: ${origin}`));
+    },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
+
+// Handle preflight requests explicitly (Express 5 compatible)
+app.use((req, res, next) => {
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204);
+  }
+  next();
+});
 
 app.use(express.json());
 
